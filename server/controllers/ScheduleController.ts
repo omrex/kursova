@@ -5,22 +5,10 @@ import {User} from '../models/UserModel';
 import {registerUser} from "../types/RegisterUser";
 import {createAdmin} from "../types/CreateAdmin";
 
-//създаваме 2 константи, едната инстанция на класа  WhiteModel, а другата на класа User
-const productModel = new ScheduleModel()
+const schModel = new ScheduleModel()
 const userModel = new User("","","","")
 
-//ще връща всички продукти
-export const getAllSchedule = async (req: Request, res: Response) => {
-    try {
-        res.send(await productModel.getSchedule());
-    } catch (error) {
-        res.status(403).send({
-            message: "No products found"
-        })
-    }
-}
 
-//ще дава възможност да се добави нова бяла техника
 export const addSchedule = async (req: Request, res: Response) => {
     try {
         const create_new_sch: CreateNewSchedule = {
@@ -38,7 +26,7 @@ export const addSchedule = async (req: Request, res: Response) => {
             lecturerID:+req.query.lecturerID,
             room:+req.query.room
         };
-        await productModel.addSchedule(create_new_sch);
+        await schModel.addSchedule(create_new_sch);
         res.send({
             message: "Success"
         })
@@ -49,14 +37,14 @@ export const addSchedule = async (req: Request, res: Response) => {
     }
 
 }
-//ще изведе продукт по дадено ИД na kategoriq
+
 export const  scheduleByGroupID = async (req: Request, res: Response) => {
     const id=+req.params.id;
     try {
-        res.send(await productModel.scheduleByGroupID(id));
+        res.send(await schModel.scheduleByGroupID(id));
     } catch (error) {
         res.status(403).send({
-            message: "No products found"
+            message: "No schedule found"
         })
     }
 }
@@ -64,10 +52,10 @@ export const  scheduleByGroupID = async (req: Request, res: Response) => {
 export const  scheduleByLecturerID = async (req: Request, res: Response) => {
     const id=+req.params.id;
     try {
-        res.send(await productModel.scheduleByLecturerID(id));
+        res.send(await schModel.scheduleByLecturerID(id));
     } catch (error) {
         res.status(403).send({
-            message: "No products found"
+            message: "No schedule found"
         })
     }
 }
@@ -75,64 +63,60 @@ export const  scheduleByLecturerID = async (req: Request, res: Response) => {
 export const  scheduleByRoomID = async (req: Request, res: Response) => {
     const id=+req.params.id;
     try {
-        res.send(await productModel.scheduleByRoomID(id));
+        res.send(await schModel.scheduleByRoomID(id));
     } catch (error) {
         res.status(403).send({
-            message: "No products found"
+            message: "No schedule found"
         })
     }
 }
 
-//ще върне всички категории
 export const allSchedule = async (req: Request, res: Response) => {
     try {
-        res.send(await productModel.getSchedule());
+        res.send(await schModel.getSchedule());
     } catch (error) {
         res.status(403).send({
-            message: "No categories found"
+            message: "No schedule found"
         })
     }
 }
 
-//ще се ъпдейтне бялата техника
 export const updateSchedule = async (req: Request, res: Response) => {
     try {
         const id = Number(req.params.id);
         const techData = req.body;
-        await productModel.updateSchedule(id, techData);
+        await schModel.updateSchedule(id, techData);
         res.status(200).send({
             message: "Success"
         })
     } catch (e) {
         console.log({e})
         res.status(403).send({
-            message: "Failed to update product"
+            message: "Failed to update schedule"
         })
     }
 }
 
-//ще се изтрие бялата техника
 export const deleteSchedule = async (req: Request, res: Response) => {
     try {
         const id = parseInt(req.params.id);
-        await productModel.deleteSchedule(id);
+        await schModel.deleteSchedule(id);
         res.status(200).send({
             message: "Success"
         })
     } catch (e) {
         res.status(403).send({
-            message: "Failed to delete product"
+            message: "Failed to delete schedule"
         })
     }
 }
 
-//създава се администраторски профил
 export const createAdminUser = async (req: Request, res:Response) => {
     try {
         const createAdmin: createAdmin = {
-            name: "Dory",
-            email: "email@dory.com",
-            password: "1234",
+            name: "admin",
+            email: "admin@admin.com",
+            password: "root",
             isAdmin: 1
         };
         await userModel.createAdminUser(createAdmin);
@@ -141,12 +125,11 @@ export const createAdminUser = async (req: Request, res:Response) => {
         })
     } catch (error) {
         res.status(403).send ({
-            message: "Create of Admin User Not Successfull"
+            message: "Create of Admin User didn't work"
         })
     }
 }
 
-//създава се възможност за логване с имейл и парола
 export const signIn = async (req: Request, res:Response) => {
     try {
         const email = req.body.email;
@@ -177,7 +160,6 @@ export const signIn = async (req: Request, res:Response) => {
     }
 }
 
-//регистрирането става с име, имейл, парола
 export const register = async (req: Request, res: Response) => {
     try {
         const registerUser: registerUser = {
@@ -188,7 +170,7 @@ export const register = async (req: Request, res: Response) => {
 
         await userModel.register(registerUser);
         res.send({
-            message: "Successfull registration"
+            message: "Successful registration"
         })
     } catch (error) {
         res.status(403).send({
@@ -197,7 +179,6 @@ export const register = async (req: Request, res: Response) => {
     }
 }
 
-//намира потребител по номер
 export const getById = async (req: Request, res: Response) => {
     const userId = req.params.id;
     const user = await userModel.findById(userId);

@@ -18,7 +18,6 @@ export class User {
         this.conn = new db().con;
         console.log(this.conn)
     }
-//регистрирането на потребител става като се вмъкнат данните на новия потребител в базата
     async register(registerUser: registerUser): Promise<boolean> {
         await this.conn.execute("INSERT INTO `users` (name, email, password)" +
             "VALUES (?,?,?)", [
@@ -28,7 +27,6 @@ export class User {
         ]);
         return true;
     }
-//създаването на администратор става като се вмъкнат данните в базата
     async createAdminUser(createAdmin: createAdmin): Promise<boolean> {
         await this.conn.execute("INSERT INTO `users` (name,email,password,isAdmin)"
             + "VALUES (?,?,?,?)", [
@@ -40,7 +38,6 @@ export class User {
         return true;
     }
 
-//логването става като се изведат данните за имейл и парола от базата данни
     async signIn() {
         const [rows] = await this.conn.query("SELECT * FROM `users`  WHERE email LIKE `${this.email}` AND password LIKE `${this.password}`");
         return rows;
@@ -52,7 +49,6 @@ export class User {
         return updatedRows;
     }
 
-//намира потребител в базата от данни по неговия ИД
     async findById(id) {
         const [newUser] = await this.conn.query("SELECT * FROM `users` WHERE id = `${id}`");
         return newUser;

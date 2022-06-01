@@ -1,67 +1,24 @@
-import { Application, Request, Response } from "express";
-let cors = require('cors')
-let express=require("express")
+const express = require("express");
+import {Application, json} from "express";
+import {scheduleRouter} from "./routes/scheduleRouter";
+const cors = require("cors");
+import {userRouter} from "./routes/UserRouter";
+
 const app: Application = express();
-
-const port: number = 3001;
+app.use(json());
 app.use(cors());
+app.use("/api", scheduleRouter);
+app.use('/api/users', userRouter);
 
-// parse requests of content-type - application/json
-app.use(express.json());
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
-// simple route
-app.get("/", (req, res) => {
-    res.json({ message: "Welcome to VVMU schedule." });
-});
-require("./app/routes/tutorial.routes.js")(app);
-
-
-
-app.listen(port, function () {
-    console.log(`App is listening on port ${port} !`);
-});
-
-let mysql = require('mysql2');
-
-let con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "vvmu"
-});
-
-// open the MySQL connection
-con.connect(function(err) {
-    if (err) throw err;
-   {
-        if (err) throw err;
-        console.log('Database is connected');
+export const isAdmin = (req, res, next) => {
+    console.log(req.user);
+    if (req.user && req.user.isAdmin) {
+        return next();
     }
-});
-module.exports = con;
+    return res.status(401).send({
+        message: 'Not admin.' });
+};
 
-//var selectQuery = 'SELECT * FROM `schedule` where groupID=12691&& year=2022 &&month=4 &&date=29';
-
-
-app.get('/vvmu',(req, res) => {
-    let my_query = req.query.query
-    console.log(my_query);
-    con.connect(function(err) {
-        if(err) throw err;
-        else {
-            con.query(
-                my_query,
-                function select(error, result, fields) {
-                if(err) {
-                    console.log(err);
-                    res.json({"error":true});
-                }
-                else {
-                    console.log(result);
-                    res.json(result);
-                }
-            });
-        }
-    });
-});
+app.listen(3002, () => {
+    console.log(`Server is listening on 3002!`)
+})
