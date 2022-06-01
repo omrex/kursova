@@ -5,13 +5,11 @@ import {CreateNewSchedule} from "../types/CreateNewSchedule";
 export class ScheduleModel {
     private con;
 
-//прави се връзка към базата данни
     constructor() {
         this.con = new db().con;
         console.log(this.con)
     }
 
-//връща се всички продукти от таблицата
     async getSchedule(): Promise<Schedule[]> {
         const [rows] = await this.con.query("SELECT * FROM `schedule`");
         return rows;
@@ -35,7 +33,6 @@ export class ScheduleModel {
         return rows;
     }
 
-//добавя се нов продукт в таблицата
     async addSchedule(createNewSchedule: CreateNewSchedule): Promise<boolean> {
         await this.con.execute("INSERT INTO `schedule`(groupID,year,month, date, startHour, endHour, disciplineID, classNumber, classType, hours, departmentID, lecturerID, room)" +
             "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [

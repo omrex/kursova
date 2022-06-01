@@ -3,6 +3,7 @@ import {Application, json} from "express";
 import {scheduleRouter} from "./routes/scheduleRouter";
 const cors = require("cors");
 import {userRouter} from "./routes/UserRouter";
+const port = 3002;
 
 const app: Application = express();
 app.use(json());
@@ -19,6 +20,6 @@ export const isAdmin = (req, res, next) => {
         message: 'Not admin.' });
 };
 
-app.listen(3002, () => {
-    console.log(`Server is listening on 3002!`)
+app.listen(port, () => {
+    console.log(`Server is listening on ${port}!`)
 })
