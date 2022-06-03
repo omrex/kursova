@@ -12,10 +12,10 @@ import {
 
 export const scheduleRouter = Router();
 
-scheduleRouter.post("/add-schedule", addSchedule);
+scheduleRouter.post("/addSchedule", addSchedule);
 scheduleRouter.get("/schedule/group/:id", scheduleByGroupID);
 scheduleRouter.get("/schedule/lecturer/:id", scheduleByLecturerID);
 scheduleRouter.get("/schedule/room/:id", scheduleByRoomID);
-scheduleRouter.get("/all-schedule", allSchedule);
+scheduleRouter.get("/allSchedule", allSchedule);
 scheduleRouter.put("/schedule/:id", updateSchedule);
 scheduleRouter.delete("/schedule/:id", deleteSchedule);

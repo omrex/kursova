@@ -7,28 +7,36 @@ export class ScheduleModel {
 
     constructor() {
         this.con = new db().con;
-        console.log(this.con)
+        //console.log(this.con)
+        console.log ("Connected to database")
     }
 
     async getSchedule(): Promise<Schedule[]> {
+        //console.log (`SELECT * FROM \`schedule`);
         const [rows] = await this.con.query("SELECT * FROM `schedule`");
         return rows;
     }
 
+    async scheduleByID(id): Promise<Schedule[]> {
+       // console.log(`SELECT * FROM \`schedule\` WHERE \`id\`=${id}`)
+        const [rows] = await this.con.query(`SELECT * FROM \`schedule\` WHERE \`id\`=${id}`);
+        return rows;
+    }
+
     async scheduleByGroupID(id): Promise<Schedule[]> {
-        console.log(`SELECT * FROM \`schedule\` WHERE \`groupID\`=${id}`)
+        //console.log(`SELECT * FROM \`schedule\` WHERE \`groupID\`=${id}`)
         const [rows] = await this.con.query(`SELECT * FROM \`schedule\` WHERE \`groupID\`=${id}`);
         return rows;
     }
 
     async scheduleByLecturerID(id): Promise<Schedule[]> {
-        console.log(`SELECT * FROM \`schedule\` WHERE \`lecturerID\`=${id}`)
+        //console.log(`SELECT * FROM \`schedule\` WHERE \`lecturerID\`=${id}`)
         const [rows] = await this.con.query(`SELECT * FROM \`schedule\` WHERE \`lecturerID\`=${id}`);
         return rows;
     }
 
     async scheduleByRoomID(id): Promise<Schedule[]> {
-        console.log(`SELECT * FROM \`schedule\` WHERE \`room\`=${id}`)
+        //console.log(`SELECT * FROM \`schedule\` WHERE \`room\`=${id}`)
         const [rows] = await this.con.query(`SELECT * FROM \`schedule\` WHERE \`room\`=${id}`);
         return rows;
     }

@@ -38,6 +38,25 @@ export const addSchedule = async (req: Request, res: Response) => {
 
 }
 
+export const register = async (req: Request, res: Response) => {
+    try {
+        const reg_User: registerUser = {
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+        };
+
+        await userModel.register(reg_User);
+        res.send({
+            message: "Successful registration"
+        })
+    } catch (error) {
+        res.status(403).send({
+            message: "Register not successful"
+        })
+    }
+}
+
 export const  scheduleByGroupID = async (req: Request, res: Response) => {
     const id=+req.params.id;
     try {
@@ -160,24 +179,7 @@ export const signIn = async (req: Request, res:Response) => {
     }
 }
 
-export const register = async (req: Request, res: Response) => {
-    try {
-        const registerUser: registerUser = {
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password
-        };
 
-        await userModel.register(registerUser);
-        res.send({
-            message: "Successful registration"
-        })
-    } catch (error) {
-        res.status(403).send({
-            message: "Register not successful"
-        })
-    }
-}
 
 export const getById = async (req: Request, res: Response) => {
     const userId = req.params.id;

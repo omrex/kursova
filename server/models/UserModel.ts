@@ -16,14 +16,14 @@ export class User {
         this.password = password;
         this.isAdmin = isAdmin;
         this.conn = new db().con;
-        console.log(this.conn)
+        //console.log(this.conn)
     }
-    async register(registerUser: registerUser): Promise<boolean> {
+    async register(reg_User: registerUser): Promise<boolean> {
         await this.conn.execute("INSERT INTO `users` (name, email, password)" +
             "VALUES (?,?,?)", [
-            registerUser.name,
-            registerUser.password,
-            registerUser.email
+            reg_User.name,
+            reg_User.password,
+            reg_User.email
         ]);
         return true;
     }
