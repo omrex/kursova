@@ -45,7 +45,7 @@ export const register = async (req: Request, res: Response) => {
             email: req.body.email,
             password: req.body.password,
         };
-
+        console.log(req.query);
         await userModel.register(reg_User);
         res.send({
             message: "Successful registration"

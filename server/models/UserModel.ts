@@ -19,11 +19,12 @@ export class User {
         //console.log(this.conn)
     }
     async register(reg_User: registerUser): Promise<boolean> {
+        console.log(reg_User);
         await this.conn.execute("INSERT INTO `users` (name, email, password)" +
             "VALUES (?,?,?)", [
             reg_User.name,
+            reg_User.email,
             reg_User.password,
-            reg_User.email
         ]);
         return true;
     }
